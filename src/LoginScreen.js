@@ -11,11 +11,6 @@ const schema = Yup.object({
   password: Yup.string().min(6, '6 caractères minimum').required('Mot de passe requis'),
 });
 
-const FIELDS = [
-  { name: 'email', label: 'Email', placeholder: 'exemple@email.com', autoCapitalize: 'none', keyboardType: 'email-address' },
-  { name: 'password', label: 'Mot de passe', placeholder: '6 caractères minimum', secureTextEntry: true },
-];
-
 export default function LoginScreen({ navigation }) {
   const { login } = useAuth();
 
@@ -28,17 +23,28 @@ export default function LoginScreen({ navigation }) {
         <Formik initialValues={{ email: '', password: '' }} validationSchema={schema} onSubmit={login}>
           {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
             <View>
-              {FIELDS.map(({ name, ...field }) => (
-                <FormField
-                  key={name}
-                  {...field}
-                  value={values[name]}
-                  onChangeText={handleChange(name)}
-                  onBlur={handleBlur(name)}
-                  error={errors[name]}
-                  touched={touched[name]}
-                />
-              ))}
+              <FormField
+                label="Email"
+                placeholder="exemple@email.com"
+                autoCapitalize="none"
+                keyboardType="email-address"
+                value={values.email}
+                onChangeText={handleChange('email')}
+                onBlur={handleBlur('email')}
+                error={errors.email}
+                touched={touched.email}
+              />
+              <FormField
+                label="Mot de passe"
+                placeholder="6 caractères minimum"
+                secureTextEntry={true}
+                value={values.password}
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                error={errors.password}
+                touched={touched.password}
+              />
+
               <PrimaryButton title="Se connecter" onPress={handleSubmit} loading={isSubmitting} style={styles.submit} />
             </View>
           )}
